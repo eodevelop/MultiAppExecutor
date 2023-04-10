@@ -4,7 +4,6 @@ import com.multi.config.JarFilePathsConfig;
 import com.multi.model.JarInfo;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class JarRunnerTest {
