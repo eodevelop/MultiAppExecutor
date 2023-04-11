@@ -54,6 +54,10 @@ public class JarRunner {
             });
         }
 
+        cleanupOnShutdown(executorService, processes);
+    }
+
+    private static void cleanupOnShutdown(ExecutorService executorService, List<Process> processes) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             synchronized (processes) {
                 for (Process process : processes) {
