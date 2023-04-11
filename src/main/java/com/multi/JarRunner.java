@@ -4,6 +4,7 @@ import com.multi.executor.JarExecutor;
 import com.multi.model.JarInfo;
 import com.multi.monitoring.io.OutputReader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,6 +23,13 @@ public class JarRunner {
         ExecutorService executorService = Executors.newFixedThreadPool(jarInfos.size());
         List<Process> processes = new ArrayList<>();
 
+        // 로그 폴더 생성
+        String logDir = workingDirectory + "\\logs";
+        File logDirectory = new File(logDir);
+        if (!logDirectory.exists()) {
+            logDirectory.mkdirs();
+        }
+
         for (JarInfo jarInfo : jarInfos) {
             executorService.submit(() -> {
                 try {
@@ -32,7 +40,18 @@ public class JarRunner {
                         processes.add(process);
                     }
 
-                    Thread outputReaderThread = new Thread(new OutputReader(process.getInputStream(), "[" + jarInfo.getPath() + "]"));
+                    // 서브 폴더 생성
+                    String subLogDir = logDir + "\\" + jarInfo.getPath().substring(jarInfo.getPath().lastIndexOf("\\") + 1);
+                    File subLogDirectory = new File(subLogDir);
+                    if (!subLogDirectory.exists()) {
+                        subLogDirectory.mkdirs();
+                    }
+
+                    // 로그 파일 경로 설정
+                    String logFileName = "application.log";
+                    String logFilePath = subLogDir + "\\" + logFileName;
+
+                    Thread outputReaderThread = new Thread(new OutputReader(process.getInputStream(), "[" + jarInfo.getPath() + "]", logFilePath));
                     outputReaderThread.start();
 
                     int exitCode = process.waitFor();
