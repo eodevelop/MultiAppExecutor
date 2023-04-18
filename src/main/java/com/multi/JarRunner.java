@@ -56,14 +56,13 @@ public class JarRunner {
             });
         }
 
-        // Create a new thread for the ConsoleManager
         Thread consoleManagerThread = new Thread(() -> consoleManager.start());
         consoleManagerThread.start();
 
         cleanupOnShutdown(executorService, processes);
     }
 
-    private static void cleanupOnShutdown(ExecutorService executorService, List<Process> processes) {
+    private void cleanupOnShutdown(ExecutorService executorService, List<Process> processes) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             synchronized (processes) {
                 for (Process process : processes) {
