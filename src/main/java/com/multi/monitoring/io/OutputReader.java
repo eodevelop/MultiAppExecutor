@@ -26,7 +26,7 @@ public class OutputReader implements Runnable {
             String line;
             while ((line = reader.readLine()) != null) {
                 String logLine = prefix + " " + line;
-                System.out.println(logLine);
+//                System.out.println(logLine);
                 writer.write(logLine);
                 writer.newLine();
             }

@@ -3,6 +3,7 @@ package com.multi;
 import com.multi.executor.JarExecutor;
 import com.multi.model.JarInfo;
 import com.multi.monitoring.io.OutputReader;
+import com.multi.utils.ConsoleManager;
 import com.multi.utils.DirectoryManager;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.concurrent.Executors;
 public class JarRunner {
     private final List<JarInfo> jarInfos;
     private final String workingDirectory;
+    private ConsoleManager consoleManager = new ConsoleManager();
 
     public JarRunner(List<JarInfo> jarInfos, String workingDirectory) {
         this.jarInfos = jarInfos;
@@ -53,6 +55,8 @@ public class JarRunner {
                 }
             });
         }
+
+        consoleManager.start();
 
         cleanupOnShutdown(executorService, processes);
     }

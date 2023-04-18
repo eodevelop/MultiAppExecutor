@@ -1,4 +1,3 @@
-/target/classes/com/multi/executor/JarExecutor.class
-/target/classes/com/multi/Main.class
-/target/classes/com/multi/monitoring/io/OutputReader.class
-/target/classes/com/multi/JarRunner.class
+/logs
+/.idea
+/target
