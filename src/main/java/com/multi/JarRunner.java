@@ -56,7 +56,9 @@ public class JarRunner {
             });
         }
 
-        consoleManager.start();
+        // Create a new thread for the ConsoleManager
+        Thread consoleManagerThread = new Thread(() -> consoleManager.start());
+        consoleManagerThread.start();
 
         cleanupOnShutdown(executorService, processes);
     }
