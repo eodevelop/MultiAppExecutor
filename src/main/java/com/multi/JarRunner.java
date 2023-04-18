@@ -48,7 +48,7 @@ public class JarRunner {
                     String logFileName = "application.log";
                     String logFilePath = subLogDir + "\\" + logFileName;
 
-                    Thread outputReaderThread = new Thread(new OutputReader(process.getInputStream(), "[" + jarInfo.getPath() + "]", logFilePath));
+                    Thread outputReaderThread = new Thread(new OutputReader(process.getInputStream(), logFilePath));
                     outputReaderThread.start();
                 } catch (Exception e) {
                     e.printStackTrace();

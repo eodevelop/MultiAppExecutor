@@ -45,7 +45,6 @@ public class ConsoleManager {
 
     private void listDirectories() throws IOException {
         Path currentPath = Paths.get("./logs").toAbsolutePath();
-        System.out.println("logs directory: " + currentPath);
 
         try (Stream<Path> paths = Files.list(currentPath)) {
             paths.filter(Files::isDirectory)
@@ -90,9 +89,17 @@ public class ConsoleManager {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(logFile)))) {
                 String line;
                 while (!stopTail) {
-                    line = reader.readLine();
-                    if (line != null) {
-                        System.out.println(line);
+                    StringBuilder lines = new StringBuilder();
+                    boolean hasNewLines = false;
+                    for (int i = 0; i < 10; i++) {
+                        line = reader.readLine();
+                        if (line != null) {
+                            lines.append(line).append("\n");
+                            hasNewLines = true;
+                        }
+                    }
+                    if (hasNewLines) {
+                        System.out.print(lines.toString());
                     } else {
                         try {
                             Thread.sleep(1000);

@@ -9,12 +9,10 @@ import java.nio.file.Paths;
 
 public class OutputReader implements Runnable {
     private final InputStream inputStream;
-    private final String prefix;
     private final String logFilePath;
 
-    public OutputReader(InputStream inputStream, String prefix, String logFilePath) {
+    public OutputReader(InputStream inputStream, String logFilePath) {
         this.inputStream = inputStream;
-        this.prefix = prefix;
         this.logFilePath = logFilePath;
     }
 
@@ -23,12 +21,11 @@ public class OutputReader implements Runnable {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
              BufferedWriter writer = Files.newBufferedWriter(Paths.get(logFilePath))) {
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String logLine = prefix + " " + line;
-//                System.out.println(logLine);
+            String logLine;
+            while ((logLine = reader.readLine()) != null) {
                 writer.write(logLine);
                 writer.newLine();
+                writer.flush();
             }
         } catch (Exception e) {
             e.printStackTrace();
