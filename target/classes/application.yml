@@ -1,5 +1,0 @@
-jars:
-  - path: "C:\\workspace\\tx-auth-api\\target\\tx-auth-api-0.0.1-SNAPSHOT.jar"
-    profile: "test"
-  - path: "C:\\workspace\\User\\tx-user-api\\target\\tx-user-api-0.0.1-SNAPSHOT.jar"
-    profile: "test"
