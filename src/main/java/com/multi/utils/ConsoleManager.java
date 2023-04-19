@@ -1,5 +1,7 @@
 package com.multi.utils;
 
+import com.multi.service.ProcessCleaner;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,6 +43,14 @@ public class ConsoleManager {
         }
 
         scanner.close();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        System.exit(0);
     }
 
     private void listDirectories() throws IOException {

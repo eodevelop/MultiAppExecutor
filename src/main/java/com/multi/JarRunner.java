@@ -1,8 +1,9 @@
 package com.multi;
 
-import com.multi.executor.JarExecutor;
+import com.multi.service.JarExecutor;
 import com.multi.model.JarInfo;
 import com.multi.monitoring.io.OutputReader;
+import com.multi.service.ProcessCleaner;
 import com.multi.utils.ConsoleManager;
 import com.multi.utils.DirectoryManager;
 
@@ -16,6 +17,7 @@ public class JarRunner {
     private final List<JarInfo> jarInfos;
     private final String workingDirectory;
     private ConsoleManager consoleManager = new ConsoleManager();
+    private ProcessCleaner processCleaner;
 
     public JarRunner(List<JarInfo> jarInfos, String workingDirectory) {
         this.jarInfos = jarInfos;
@@ -59,17 +61,7 @@ public class JarRunner {
         Thread consoleManagerThread = new Thread(() -> consoleManager.start());
         consoleManagerThread.start();
 
-        cleanupOnShutdown(executorService, processes);
-    }
-
-    private void cleanupOnShutdown(ExecutorService executorService, List<Process> processes) {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            synchronized (processes) {
-                for (Process process : processes) {
-                    process.destroy();
-                }
-            }
-            executorService.shutdown();
-        }));
+        processCleaner = new ProcessCleaner(processes, executorService);
+        processCleaner.cleanupOnShutdown();
     }
 }
