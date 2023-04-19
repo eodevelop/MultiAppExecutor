@@ -1,6 +1,6 @@
-package com.multi.utils;
+package com.multi.monitoring;
 
-import com.multi.service.ProcessCleaner;
+import com.multi.utils.DirectoryManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,17 +13,18 @@ import java.util.stream.Stream;
 
 public class ConsoleManager {
     private volatile boolean stopTail = false;
+    private final DirectoryManager directoryManager = new DirectoryManager();
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.print("Enter command (list, clear, tail, stop or exit): ");
+            System.out.print("Enter command (list, clear, tail, s(stop) or exit): ");
             String command = scanner.nextLine();
 
             if (command.equalsIgnoreCase("list")) {
                 try {
-                    listDirectories();
+                    directoryManager.list();
                 } catch (IOException e) {
                     System.err.println("Error listing directories: " + e.getMessage());
                 }
@@ -33,7 +34,7 @@ public class ConsoleManager {
                 System.out.print("Enter the folder name: ");
                 String folderName = scanner.nextLine();
                 tailLogFile(folderName);
-            } else if (command.equalsIgnoreCase("stop")) {
+            } else if (command.equalsIgnoreCase("s") || command.equalsIgnoreCase("stop")) {
                 stopTail = true;
             } else if (command.equalsIgnoreCase("exit")) {
                 break;
@@ -51,15 +52,6 @@ public class ConsoleManager {
         }
 
         System.exit(0);
-    }
-
-    private void listDirectories() throws IOException {
-        Path currentPath = Paths.get("./logs").toAbsolutePath();
-
-        try (Stream<Path> paths = Files.list(currentPath)) {
-            paths.filter(Files::isDirectory)
-                    .forEach(path -> System.out.println("  - " + path.getFileName()));
-        }
     }
 
     private void tailLogFile(String folderName) {

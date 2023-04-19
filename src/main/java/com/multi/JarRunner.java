@@ -2,9 +2,9 @@ package com.multi;
 
 import com.multi.service.JarExecutor;
 import com.multi.model.JarInfo;
-import com.multi.monitoring.io.OutputReader;
+import com.multi.monitoring.OutputReader;
 import com.multi.service.ProcessCleaner;
-import com.multi.utils.ConsoleManager;
+import com.multi.monitoring.ConsoleManager;
 import com.multi.utils.DirectoryManager;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class JarRunner {
 
         // 로그 폴더 생성
         String logDir = workingDirectory + "\\logs";
-        DirectoryManager.createDirectoryIfNotExists(logDir);
+        DirectoryManager.createIfNotExists(logDir);
 
         for (JarInfo jarInfo : jarInfos) {
             executorService.submit(() -> {
@@ -44,7 +44,7 @@ public class JarRunner {
 
                     // 서브 폴더 생성
                     String subLogDir = logDir + "\\" + jarInfo.getPath().substring(jarInfo.getPath().lastIndexOf("\\") + 1);
-                    DirectoryManager.createDirectoryIfNotExists(subLogDir);
+                    DirectoryManager.createIfNotExists(subLogDir);
 
                     // 로그 파일 경로 설정
                     String logFileName = "application.log";

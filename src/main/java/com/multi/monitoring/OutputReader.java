@@ -1,4 +1,4 @@
-package com.multi.monitoring.io;
+package com.multi.monitoring;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
